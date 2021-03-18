@@ -1,6 +1,6 @@
 package utils
 
-import "go-ethereum-development/model/jsonrpc"
+import "github.com/MuserQuantity/go-ethereum-development/model/jsonrpc"
 
 func GetBlockNumber() (blocknumber uint64, err error) {
 	return

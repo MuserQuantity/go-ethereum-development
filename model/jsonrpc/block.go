@@ -3,7 +3,7 @@ package jsonrpc
 import "C"
 import (
 	"context"
-	"go-ethereum-development/server"
+	"github.com/MuserQuantity/go-ethereum-development/server"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"

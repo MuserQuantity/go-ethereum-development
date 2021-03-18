@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"go-ethereum-development/server"
+	"github.com/MuserQuantity/go-ethereum-development/server"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"strconv"

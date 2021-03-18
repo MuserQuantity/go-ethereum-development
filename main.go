@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-ethereum-development/server"
+	"github.com/MuserQuantity/go-ethereum-development/server"
 )
 
 var Server server.CrudServer

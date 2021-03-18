@@ -1,4 +1,4 @@
-module go-ethereum-development
+module github.com/MuserQuantity/go-ethereum-development
 
 go 1.16
 
