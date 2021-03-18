@@ -1,0 +1,25 @@
+{
+  "mongodb": {
+    "host": "${ MONGO_HOST | localhost }",
+    "port": "${ MONGO_PORT | 27017}",
+    "user": "${ MONGO_USER }",
+    "pass": "${ MONGO_PASS }",
+    "dbname": "${ MONGO_DBNAME }"
+  },
+  "mysqldb":{
+    "host": "${ MYSQL_HOST | localhost }",
+    "port": "${ MYSQL_PORT | 27017}",
+    "user": "${ MYSQL_USER }",
+    "pass": "${ MYSQL_PASS }",
+    "dbname": "${ MYSQL_DBNAME }"
+  },
+  "redis": {
+    "host": "${ REDIS_HOST | localhost }",
+    "port": "${ REDIS_PORT | 6379}",
+    "pass": "${ REDIS_PASS }"
+  },
+  "ethereum": {
+    "host": "${ ETHEREUM_HOST | localhost }",
+    "port": "${ ETHEREUM_PORT | 7545 }"
+  }
+}
