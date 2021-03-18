@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/golobby/config"
 	"github.com/golobby/config/feeder"
@@ -14,14 +15,15 @@ import (
 )
 
 type CrudServer struct {
-	EthereumClient *rpc.Client
-	MongoDBClient  *mongo.Client
-	MongoDBName    string
+	RpcClient     *rpc.Client
+	EthClient     *ethclient.Client
+	MongoDBClient *mongo.Client
+	MongoDBName   string
 }
 
 func (crudServer *CrudServer) Init() {
 	// 连接全节点
-	crudServer.InitEthereum()
+	crudServer.InitEthClient()
 	// 连接数据库
 	crudServer.InitMongoDB()
 }
@@ -71,7 +73,7 @@ func (crudServer *CrudServer) InitMongoDB() {
 // 初始化mysql连接
 
 // 初始化ethereum连接
-func (crudServer *CrudServer) InitEthereum() {
+func (crudServer *CrudServer) InitRpcClient() {
 	// 由文件初始化数据
 	c, err := config.New(config.Options{
 		Feeder: feeder.Json{Path: "config.json"},
@@ -84,7 +86,30 @@ func (crudServer *CrudServer) InitEthereum() {
 	}
 	url := "http://" + ethereumhost + ":" + ethereumport
 	// 连接全节点
-	crudServer.EthereumClient, err = rpc.Dial(url)
+	crudServer.RpcClient, err = rpc.Dial(url)
+	// 检查连接
+	if err != nil {
+		err = errors.New("Failed to connect to the RPC client: %v" + err.Error())
+		return
+	}
+	log.Println("Connect to RPC Client successfully!")
+	fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "Connect to RPC Client successfully!")
+	return
+}
+func (crudServer *CrudServer) InitEthClient() {
+	// 由文件初始化数据
+	c, err := config.New(config.Options{
+		Feeder: feeder.Json{Path: "config.json"},
+		Env:    ".env",
+	})
+	ethereumhost, err1 := c.GetString("ethereum.host")
+	ethereumport, err2 := c.GetString("ethereum.port")
+	if err1 != nil || err2 != nil {
+		log.Fatal(err1, err2)
+	}
+	url := "http://" + ethereumhost + ":" + ethereumport
+	// 连接全节点
+	crudServer.EthClient, err = ethclient.Dial(url)
 	// 检查连接
 	if err != nil {
 		err = errors.New("Failed to connect to the Ethereum client: %v" + err.Error())
