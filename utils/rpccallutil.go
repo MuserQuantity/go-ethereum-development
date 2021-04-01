@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/MuserQuantity/go-ethereum-development/model/jsonrpc"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/rpc"
 	"log"
+	"math/big"
 	"strconv"
 )
 
@@ -13,6 +15,7 @@ type RpcCall struct {
 	EthereumClient *rpc.Client
 }
 
+//
 func (rpcCall *RpcCall) Init(client *rpc.Client) {
 	rpcCall.EthereumClient = client
 }
@@ -30,6 +33,31 @@ func (rpcCall *RpcCall) GetBlockNumber() (blockNumber uint64, err error) {
 	blockNumber, err = strconv.ParseUint(result, 0, 64)
 	if err != nil {
 		log.Println("BLOCKNUMBER CONVERSION ERROR:", err.Error())
+		return
+	}
+	return
+}
+
+// 获取balance
+func (rpcCall *RpcCall) GetBalance(address string) (balance *big.Int, err error) {
+	var result string
+	err = rpcCall.EthereumClient.CallContext(context.Background(), &result, "eth_getBalance", address, "latest")
+	if err != nil {
+		log.Println("RPC CALL ERROR: eth_getBalance", err.Error())
+		return
+	}
+	value, err := hexutil.DecodeBig(result)
+	if err != nil {
+		log.Println("RPC CALL ERROR: eth_getBalance", err.Error())
+		return
+	}
+	balance = FromWei(value)
+	return
+}
+func (rpcCall *RpcCall) ListAccount() (accounts []string, err error) {
+	err = rpcCall.EthereumClient.CallContext(context.Background(), &accounts, "eth_accounts")
+	if err != nil {
+		log.Println("RPC CALL ERROR: eth_getAccounts", err.Error())
 		return
 	}
 	return

@@ -24,6 +24,7 @@ type CrudServer struct {
 func (crudServer *CrudServer) Init() {
 	// 连接全节点
 	crudServer.InitEthClient()
+	crudServer.InitRpcClient()
 	// 连接数据库
 	crudServer.InitMongoDB()
 }

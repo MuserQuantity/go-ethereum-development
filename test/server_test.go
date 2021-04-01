@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/MuserQuantity/go-ethereum-development/server"
+	"github.com/MuserQuantity/go-ethereum-development/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"strconv"
@@ -25,7 +26,8 @@ func TestMongo(t *testing.T) {
 }
 func TestEthereum(t *testing.T) {
 	var result string
-	err := Server.EthereumClient.CallContext(context.Background(), &result, "eth_blockNumber")
+	var err error
+	err = Server.RpcClient.CallContext(context.Background(), &result, "eth_blockNumber")
 	if err != nil {
 		log.Println("RPC CALL ERROR: eth_blockNumber", err.Error())
 		return
@@ -40,6 +42,14 @@ func TestEthereum(t *testing.T) {
 		return
 	}
 	fmt.Println(blockNumber)
+}
+func TestCall(t *testing.T) {
+	var caller utils.RpcCall
+	caller.Init(Server.RpcClient)
+	balance, _ := caller.GetBalance("0x4dca37096d8e5666dA28bc7cf52D15cf777e1425")
+	fmt.Println(balance)
+	accounts, _ := caller.ListAccount()
+	fmt.Println(accounts)
 }
 func TestMain(m *testing.M) {
 	Server.Init()
