@@ -8,4 +8,6 @@ Develop your eth app easily by using the tools. Quick call for rpc-api and set y
 
 ### 使用说明
 ##### 配置
-使用了
+
+##### 操作
+* 可以使用`Server.C.GetString("xxx.xxx")`来获取数据

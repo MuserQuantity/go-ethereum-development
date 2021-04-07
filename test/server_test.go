@@ -27,19 +27,17 @@ func TestMongo(t *testing.T) {
 func TestEthereum(t *testing.T) {
 	var result string
 	var err error
-	err = Server.RpcClient.CallContext(context.Background(), &result, "eth_blockNumber")
+	err = Server.RpcClient.CallContext(context.TODO(), &result, "eth_blockNumber")
 	if err != nil {
-		log.Println("RPC CALL ERROR: eth_blockNumber", err.Error())
-		return
+		log.Fatal("RPC CALL ERROR: eth_blockNumber", err.Error())
 	}
 	if result == "" {
 		err = errors.New("SEARCH FAILED: eth_blockNumber in TestEthereum")
-		return
+		log.Fatal(err.Error())
 	}
 	blockNumber, err := strconv.ParseUint(result, 0, 64)
 	if err != nil {
-		log.Println("BLOCKNUMBER CONVERSION ERROR:", err.Error())
-		return
+		log.Fatal("BLOCKNUMBER CONVERSION ERROR:", err.Error())
 	}
 	fmt.Println(blockNumber)
 }
